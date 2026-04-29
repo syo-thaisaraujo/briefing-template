@@ -99,11 +99,7 @@
 
   <div class="fheader">
     <div class="logo-area">
-      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="19" cy="19" r="19" fill="#c0392b"/>
-        <path d="M25.5 11.5C23.2 9 17.5 8.5 14.5 11.5c-2.5 2.5-1.8 6.2 1.2 8l5 3.2c2.8 1.8 3.2 5.2.8 7.2-2.6 2.2-7.5 2-10-1" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none"/>
-      </svg>
-      <span class="logo-text">Syonet</span>
+      <img src="https://drive.google.com/thumbnail?id=1POe4xbbZB7q6OHQukdsOIoLJjQKtis6v&sz=w200" style="height:38px;width:auto;" alt="Syonet">
     </div>
     <div class="header-right">
       <h1>Site Template</h1>
@@ -118,22 +114,23 @@
     <div class="sec">
       <div class="sec-title">1. Identificação</div>
       <div class="f">
-        <label>Marca da concessionária <span class="req">*</span></label>
-        <input type="text" id="marca" placeholder="Ex: Toyota Centro-Oeste" />
+        <label>Nome do grupo <span class="req">*</span></label>
+        <input type="text" id="grupo" placeholder="Ex: Grupo Exemplo" />
       </div>
       <div class="f">
-        <label>Seu nome <span class="req">*</span></label>
-        <input type="text" id="nome" placeholder="Nome completo" />
+        <label>Marca <span class="req">*</span></label>
+        <input type="text" id="marca" placeholder="Ex: Toyota, Honda, Chevrolet…" />
       </div>
       <div class="f">
-        <label>Função na empresa <span class="req">*</span></label>
-        <input type="text" id="funcao" placeholder="Ex: Gerente de marketing" />
+        <label>Seu nome e função na empresa <span class="req">*</span></label>
+        <input type="text" id="nome_funcao" placeholder="Ex: João Silva — Gerente de marketing" />
       </div>
       <div class="f">
         <label>Seu e-mail <span class="req">*</span></label>
         <input type="email" id="email" placeholder="seu@email.com" />
       </div>
     </div>
+
 
     <div class="sec">
       <div class="sec-title">2. Template e domínio</div>
@@ -305,7 +302,7 @@
 
   function enviar() {
     const campos = [
-      ['marca','Marca da concessionária'], ['nome','Seu nome'], ['funcao','Função'],
+      ['grupo','Nome do grupo'], ['marca','Marca'], ['nome_funcao','Nome e função'],
       ['email','E-mail'], ['template_url','Link do template'], ['setores','Setores'],
       ['dominio','Domínio'], ['ga_id','ID do Google Analytics'], ['integrador','Integrador'],
       ['cnpjs','CNPJs'], ['crm','CRM'], ['emails_lead','E-mails de leads'],
@@ -323,9 +320,9 @@
     if (!gr('estoque'))   { showToast('Informe se o estoque é unificado ou separado.', 'err'); return; }
 
     const payload = {
+      grupo:        document.getElementById('grupo').value,
       marca:        document.getElementById('marca').value,
-      nome:         document.getElementById('nome').value,
-      funcao:       document.getElementById('funcao').value,
+      nome_funcao:  document.getElementById('nome_funcao').value,
       email:        document.getElementById('email').value,
       template_url: document.getElementById('template_url').value,
       setores:      document.getElementById('setores').value,
