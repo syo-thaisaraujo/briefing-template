@@ -91,7 +91,7 @@
     </div>
   </div>
 
-  <div class="step-bar" id="stepbar"></div>
+  <div class="step-bar" id="stepbar" style="display:none"></div>
 
   <div id="formbody">
 
@@ -132,7 +132,7 @@
       <div class="f">
         <label>ID da Conta de Google Ads <span class="req">*</span></label>
         <p class="hint">Para conectar o Google Ads, informe o ID da sua conta abaixo.</p>
-        <input type="text" id="google_ads_id" placeholder="Ex: 123-456-7890" />
+        <input type="text" id="google_ads_id" placeholder="123-456-7890" maxlength="12" oninput="mascaraAdsId(this)" />
       </div>
     </div>
 
@@ -149,7 +149,7 @@
         </div>
       </div>
 
-      <div class="info-box">Adicione <code>seo-syonet@anaytics-syonet.iam.gserviceaccount.com</code> com permissão de gerenciamento nível <strong>leitor</strong>. Caso não possua Google Analytics, podemos criar pela Syonet.</div>
+      <div class="info-box">Adicione <code>analytics-3@mcc-analytics.iam.gserviceaccount.com</code> com permissão de gerenciamento nível <strong>leitor</strong>. Caso não possua Google Analytics, podemos criar pela Syonet.</div>
       <div class="f">
         <label>ID do Google Analytics — Leitor <span class="req">*</span></label>
         <div class="rg">
@@ -253,6 +253,13 @@
 <script>
   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwLkSw7CBuODvhI9o6kK383MZxTu-H4dKrcBNDGEHHKYN1G2xD0c_b0I5H78na7l4vA/exec';
 
+  function mascaraAdsId(el) {
+    var v = el.value.replace(/\D/g, '').substring(0, 10);
+    if (v.length > 6) v = v.substring(0,3) + '-' + v.substring(3,6) + '-' + v.substring(6);
+    else if (v.length > 3) v = v.substring(0,3) + '-' + v.substring(3);
+    el.value = v;
+  }
+
   function cc(el, id) { document.getElementById(id).textContent = el.value.length + ' / ' + el.maxLength; }
 
   function toggleWebsite() {
@@ -339,21 +346,7 @@
     });
   }
 
-  // Barra de progresso
-  var sb = document.getElementById('stepbar');
-  for (var i = 0; i < 6; i++) { var d = document.createElement('div'); d.className = 'sd'; sb.appendChild(d); }
-  var dots = document.querySelectorAll('.sd');
-  var secs = document.querySelectorAll('.sec');
-  secs.forEach(function(s) {
-    new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) {
-          var idx = Array.from(secs).indexOf(e.target);
-          dots.forEach(function(d, i) { d.className = 'sd' + (i <= idx ? ' on' : ''); });
-        }
-      });
-    }, { threshold: 0.3 }).observe(s);
-  });
+  // Barra de progresso removida — form de página única
 </script>
 </body>
 </html>
