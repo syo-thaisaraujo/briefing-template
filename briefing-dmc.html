@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DMC | Briefing — Syonet</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #f4f5f7; color: #1a1a2e; min-height: 100vh; }
+    .page { max-width: 680px; margin: 0 auto; padding: 2rem 1rem 1rem; }
+
+    .fheader { background: #0f2340; border-radius: 14px; padding: 1.4rem 2rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .logo-area img { height: 36px; width: auto; display: block; }
+    .header-right { text-align: right; }
+    .header-right h1 { font-size: 15px; font-weight: 600; color: #fff; }
+    .header-right p { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+    .step-bar { display: flex; gap: 5px; margin-bottom: 1.5rem; }
+    .sd { height: 3px; border-radius: 2px; flex: 1; background: #ddd; transition: background 0.3s; }
+    .sd.on { background: #c0392b; }
+
+    .sec { background: #fff; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.2rem; border: 0.5px solid #e0e0e0; }
+    .sec-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #c0392b; margin-bottom: 1.2rem; padding-bottom: 8px; border-bottom: 0.5px solid #eee; }
+
+    .f { margin-bottom: 1.2rem; }
+    .f:last-child { margin-bottom: 0; }
+    .f label { display: block; font-size: 13px; font-weight: 500; color: #1a1a2e; margin-bottom: 5px; }
+    .f .hint { font-size: 12px; color: #666; margin-bottom: 6px; line-height: 1.5; }
+    .f input[type=text], .f input[type=email], .f input[type=url], .f textarea {
+      width: 100%; padding: 9px 11px; font-size: 13px; font-family: 'Poppins', sans-serif;
+      border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #1a1a2e;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .f input:focus, .f textarea:focus { border-color: #0f2340; box-shadow: 0 0 0 3px rgba(15,35,64,0.08); }
+    .f textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+    .rg { display: flex; flex-direction: column; gap: 8px; }
+    .rg label { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; font-weight: 400; cursor: pointer; color: #1a1a2e; line-height: 1.5; }
+    .rg input[type=radio] { width: 16px; height: 16px; accent-color: #c0392b; cursor: pointer; flex-shrink: 0; margin-top: 2px; }
+
+    .info-box { background: #eef2f8; border-left: 3px solid #0f2340; border-radius: 8px; padding: 10px 13px; font-size: 12px; color: #444; line-height: 1.6; margin-bottom: 1rem; }
+    .info-box code { font-family: monospace; font-size: 11px; background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 3px; color: #0f2340; }
+
+    .conditional { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 0.5px solid #eee; }
+    .conditional.visible { display: block; }
+
+    .links-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+    .li { display: flex; gap: 6px; align-items: center; }
+    .li input { flex: 1; }
+    .li button { background: none; border: none; cursor: pointer; color: #aaa; font-size: 18px; line-height: 1; padding: 2px 6px; }
+    .li button:hover { color: #c0392b; }
+    .add-btn { font-size: 12px; color: #0f2340; background: none; border: 1px dashed #aac; border-radius: 8px; padding: 6px 13px; cursor: pointer; font-family: 'Poppins', sans-serif; }
+    .add-btn:hover { background: #eef2f8; }
+
+    .req { color: #c0392b; margin-left: 2px; }
+    .char-c { font-size: 11px; color: #aaa; text-align: right; margin-top: 3px; }
+
+    .security-note { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #888; background: #f9f9f9; border: 0.5px solid #e0e0e0; border-radius: 8px; padding: 10px 14px; margin-bottom: 1.2rem; }
+    .security-note svg { flex-shrink: 0; }
+
+    .sub-wrap { background: #fff; border-radius: 12px; padding: 1.5rem; border: 0.5px solid #e0e0e0; }
+    .sub-btn { width: 100%; padding: 13px; font-size: 14px; font-weight: 600; color: #fff; background: #0f2340; border: none; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif; letter-spacing: 0.02em; transition: background 0.15s; }
+    .sub-btn:hover { background: #1a3560; }
+    .sub-btn:disabled { background: #aaa; cursor: not-allowed; }
+
+    .toast { display: none; border-radius: 8px; padding: 12px 16px; font-size: 13px; margin-top: 1rem; line-height: 1.5; }
+    .toast.ok { background: #e8f5e9; border: 1px solid #a5d6a7; color: #2e7d32; }
+    .toast.err { background: #ffebee; border: 1px solid #ef9a9a; color: #b71c1c; }
+
+    .success-screen { text-align: center; padding: 4rem 1rem; background: #fff; border-radius: 12px; border: 0.5px solid #e0e0e0; }
+    .success-screen .check { width: 64px; height: 64px; background: #0f2340; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+    .success-screen h2 { font-size: 20px; font-weight: 600; color: #0f2340; }
+    .success-screen p { color: #666; margin-top: 8px; line-height: 1.7; font-size: 14px; }
+
+    .footer { text-align: center; font-size: 12px; color: #aaa; padding: 2rem 0 1rem; }
+    .footer a { color: #aaa; text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="fheader">
+    <div class="logo-area">
+      <img src="https://drive.google.com/thumbnail?id=1POe4xbbZB7q6OHQukdsOIoLJjQKtis6v&sz=w200" alt="Syonet">
+    </div>
+    <div class="header-right">
+      <h1>DMC</h1>
+      <p>Briefing</p>
+    </div>
+  </div>
+
+  <div class="step-bar" id="stepbar"></div>
+
+  <div id="formbody">
+
+    <!-- 1. IDENTIFICAÇÃO -->
+    <div class="sec">
+      <div class="sec-title">1. Identificação</div>
+      <div class="f">
+        <label>Nome do grupo <span class="req">*</span></label>
+        <input type="text" id="grupo" placeholder="Ex: Grupo Exemplo" />
+      </div>
+      <div class="f">
+        <label>Marca <span class="req">*</span></label>
+        <input type="text" id="marca" placeholder="Ex: Toyota, Honda, Chevrolet…" />
+      </div>
+      <div class="f">
+        <label>Seu nome e função na empresa <span class="req">*</span></label>
+        <input type="text" id="nome_funcao" placeholder="Ex: João Silva — Gerente de marketing" />
+      </div>
+      <div class="f">
+        <label>Seu e-mail <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="seu@email.com" />
+      </div>
+    </div>
+
+    <!-- 2. META ADS -->
+    <div class="sec">
+      <div class="sec-title">2. Meta Ads</div>
+      <div class="f">
+        <label>E-mail para acesso ao integrador do Meta <span class="req">*</span></label>
+        <p class="hint">Para conectar o Facebook, informe seu e-mail para criarmos seu acesso ao integrador do Meta.</p>
+        <input type="email" id="meta_email" placeholder="seu@email.com" />
+      </div>
+    </div>
+
+    <!-- 3. GOOGLE ADS -->
+    <div class="sec">
+      <div class="sec-title">3. Google Ads</div>
+      <div class="f">
+        <label>ID da Conta de Google Ads <span class="req">*</span></label>
+        <p class="hint">Para conectar o Google Ads, informe o ID da sua conta abaixo.</p>
+        <input type="text" id="google_ads_id" placeholder="Ex: 123-456-7890" />
+      </div>
+    </div>
+
+    <!-- 4. GOOGLE ANALYTICS -->
+    <div class="sec">
+      <div class="sec-title">4. Google Analytics</div>
+
+      <div class="info-box">Adicione <code>analytics@syonet.com</code> com permissão de gerenciamento nível <strong>admin</strong>. Caso não possua Google Analytics, podemos criar pela Syonet.</div>
+      <div class="f">
+        <label>Google Analytics — Admin <span class="req">*</span></label>
+        <div class="rg">
+          <label><input type="radio" name="ga_admin" value="Fornecido acesso do meu ID para a Syonet"> Fornecido acesso do meu ID para a Syonet</label>
+          <label><input type="radio" name="ga_admin" value="Não possuo acesso, criar novo com a Syonet"> Não possuo acesso à conta do Analytics, criar um novo com o time Syonet</label>
+        </div>
+      </div>
+
+      <div class="info-box">Adicione <code>analytics-3@mcc-analytics.iam.gserviceaccount.com</code> com permissão de gerenciamento nível <strong>leitor</strong>. Caso não possua Google Analytics, podemos criar pela Syonet.</div>
+      <div class="f">
+        <label>ID do Google Analytics — Leitor <span class="req">*</span></label>
+        <div class="rg">
+          <label><input type="radio" name="ga_leitor" value="Fornecido acesso do meu ID para a Syonet"> Fornecido acesso do meu ID para a Syonet</label>
+          <label><input type="radio" name="ga_leitor" value="Não possuo acesso, criar novo com a Syonet"> Não possuo acesso à conta do Analytics, criar um novo com o time Syonet</label>
+        </div>
+      </div>
+
+      <div class="f">
+        <label>URL do site <span class="req">*</span></label>
+        <p class="hint">Para conectar o Google Analytics, informe a URL do site.</p>
+        <input type="url" id="ga_url" placeholder="https://www.seusite.com.br" />
+      </div>
+    </div>
+
+    <!-- 5. WEBSITE -->
+    <div class="sec">
+      <div class="sec-title">5. Website</div>
+
+      <div class="f">
+        <label>Como deseja conectar os formulários do site? <span class="req">*</span></label>
+        <div class="rg">
+          <label><input type="radio" name="website_integracao" value="Documentação técnica para agência" onchange="toggleWebsite()"> A Syonet envia a documentação técnica para que a agência que criou o site envie os leads para a DMC</label>
+          <label><input type="radio" name="website_integracao" value="Liberar acesso ao servidor" onchange="toggleWebsite()"> Liberar acesso ao servidor para que a Syonet integre os formulários</label>
+          <label><input type="radio" name="website_integracao" value="Integrar via Syonet CRM" onchange="toggleWebsite()"> Integrar via Syonet CRM</label>
+          <label><input type="radio" name="website_integracao" value="Meu site é Syonet" onchange="toggleWebsite()"> Meu site é Syonet</label>
+          <label><input type="radio" name="website_integracao" value="Outro" onchange="toggleWebsite()"> Outro</label>
+        </div>
+
+        <!-- Condicional: dados do servidor -->
+        <div class="conditional" id="cond-servidor">
+          <label style="margin-bottom:6px;display:block;font-size:13px;font-weight:500">Dados de acesso ao servidor <span class="req">*</span></label>
+          <p class="hint">Informe host, porta, usuário e senha.</p>
+          <textarea id="servidor_dados" rows="3" placeholder="Host: ftp.seusite.com&#10;Porta: 21&#10;Usuário: usuario&#10;Senha: ****" maxlength="500" oninput="cc(this,'sc1')"></textarea>
+          <div class="char-c" id="sc1">0 / 500</div>
+        </div>
+
+        <!-- Condicional: outro -->
+        <div class="conditional" id="cond-website-outro">
+          <label style="margin-bottom:6px;display:block;font-size:13px;font-weight:500">Descreva</label>
+          <input type="text" id="website_outro" placeholder="Descreva como deseja integrar…" />
+        </div>
+      </div>
+
+      <div class="f">
+        <label>Você usa chatbot?</label>
+        <p class="hint">Se sim, descreva qual é a ferramenta.</p>
+        <input type="text" id="chatbot_nome" placeholder="Ex: ManyChat, Leadster, Zendesk…" oninput="toggleChatbot()" />
+      </div>
+
+      <!-- Condicional: chatbot -->
+      <div class="conditional" id="cond-chatbot">
+        <div class="f">
+          <label>Como deseja conectar seu chatbot? <span class="req">*</span></label>
+          <div class="rg">
+            <label><input type="radio" name="chatbot_integracao" value="Enviar documentação de integração" onchange="toggleChatbotDoc()"> Enviar documentação de integração</label>
+            <label><input type="radio" name="chatbot_integracao" value="Integrar via template de e-mail" onchange="toggleChatbotDoc()"> Integrar via template de e-mail <span style="font-size:11px;color:#888">(selecione se o chatbot envia um e-mail automático com os dados do lead após encerrar a conversa)</span></label>
+            <label><input type="radio" name="chatbot_integracao" value="Meu chatbot é Syonet" onchange="toggleChatbotDoc()"> Meu chatbot é Syonet</label>
+            <label><input type="radio" name="chatbot_integracao" value="Não possuo chatbot" onchange="toggleChatbotDoc()"> Não possuo chatbot</label>
+            <label><input type="radio" name="chatbot_integracao" value="Outro" onchange="toggleChatbotDoc()"> Outro</label>
+          </div>
+
+          <!-- Condicional: documentação chatbot -->
+          <div class="conditional" id="cond-chatbot-doc">
+            <label style="margin-bottom:6px;display:block;font-size:13px;font-weight:500;margin-top:1rem">URL da documentação de integração</label>
+            <p class="hint">Insira a URL ou envie o arquivo no campo ao final do formulário.</p>
+            <input type="url" id="chatbot_doc_url" placeholder="https://docs.seuchatbot.com/api" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. ACESSOS DMC -->
+    <div class="sec">
+      <div class="sec-title">6. Acessos à DMC</div>
+      <div class="f">
+        <label>Quais pessoas terão acesso à DMC? <span class="req">*</span></label>
+        <p class="hint">Liste os e-mails abaixo, um por linha.</p>
+        <textarea id="acessos_dmc" rows="4" placeholder="joao@empresa.com&#10;maria@empresa.com" maxlength="600" oninput="cc(this,'sc2')"></textarea>
+        <div class="char-c" id="sc2">0 / 600</div>
+      </div>
+    </div>
+
+    <div class="sub-wrap">
+      <div class="security-note">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5L2 4v4c0 3.3 2.5 6.3 6 7 3.5-.7 6-3.7 6-7V4L8 1.5z" stroke="#888" stroke-width="1.2" fill="none" stroke-linejoin="round"/><path d="M5.5 8l1.8 1.8L10.5 6" stroke="#888" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Seus dados são enviados de forma segura e utilizados apenas pela equipe Syonet.
+      </div>
+      <button class="sub-btn" id="submitBtn" onclick="enviar()" type="button">Enviar briefing →</button>
+      <div class="toast" id="toast"></div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    © 2026 Syonet CRM — Todos os direitos reservados &nbsp;•&nbsp; <a href="https://syonet.com" target="_blank">syonet.com</a>
+  </div>
+
+</div>
+
+<script>
+  const SHEET_URL = 'SUA_URL_DO_APPS_SCRIPT_DMC_AQUI';
+
+  function cc(el, id) { document.getElementById(id).textContent = el.value.length + ' / ' + el.maxLength; }
+
+  function toggleWebsite() {
+    var val = document.querySelector('input[name="website_integracao"]:checked');
+    document.getElementById('cond-servidor').className = 'conditional' + (val && val.value === 'Liberar acesso ao servidor' ? ' visible' : '');
+    document.getElementById('cond-website-outro').className = 'conditional' + (val && val.value === 'Outro' ? ' visible' : '');
+  }
+
+  function toggleChatbot() {
+    var val = document.getElementById('chatbot_nome').value.trim();
+    document.getElementById('cond-chatbot').className = 'conditional' + (val ? ' visible' : '');
+  }
+
+  function toggleChatbotDoc() {
+    var val = document.querySelector('input[name="chatbot_integracao"]:checked');
+    document.getElementById('cond-chatbot-doc').className = 'conditional' + (val && val.value === 'Enviar documentação de integração' ? ' visible' : '');
+  }
+
+  function gr(name) { var c = document.querySelector('input[name="' + name + '"]:checked'); return c ? c.value : ''; }
+
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.className = 'toast ' + type; t.style.display = 'block';
+    t.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function enviar() {
+    var campos = [
+      ['grupo','Nome do grupo'], ['marca','Marca'], ['nome_funcao','Nome e função'],
+      ['email','E-mail'], ['meta_email','E-mail Meta Ads'], ['google_ads_id','ID Google Ads'],
+      ['ga_url','URL do site'], ['acessos_dmc','Acessos à DMC']
+    ];
+    for (var i = 0; i < campos.length; i++) {
+      if (!document.getElementById(campos[i][0]).value.trim()) {
+        showToast('Campo obrigatório não preenchido: ' + campos[i][1], 'err'); return;
+      }
+    }
+    if (!gr('ga_admin'))  { showToast('Confirme o acesso admin ao Google Analytics.', 'err'); return; }
+    if (!gr('ga_leitor')) { showToast('Confirme o acesso leitor ao Google Analytics.', 'err'); return; }
+    if (!gr('website_integracao')) { showToast('Selecione como deseja conectar os formulários do site.', 'err'); return; }
+
+    var integracao = gr('website_integracao');
+    if (integracao === 'Liberar acesso ao servidor' && !document.getElementById('servidor_dados').value.trim()) {
+      showToast('Informe os dados de acesso ao servidor.', 'err'); return;
+    }
+
+    var payload = {
+      grupo:               document.getElementById('grupo').value,
+      marca:               document.getElementById('marca').value,
+      nome_funcao:         document.getElementById('nome_funcao').value,
+      email:               document.getElementById('email').value,
+      meta_email:          document.getElementById('meta_email').value,
+      google_ads_id:       document.getElementById('google_ads_id').value,
+      ga_admin:            gr('ga_admin'),
+      ga_leitor:           gr('ga_leitor'),
+      ga_url:              document.getElementById('ga_url').value,
+      website_integracao:  integracao,
+      servidor_dados:      integracao === 'Liberar acesso ao servidor' ? document.getElementById('servidor_dados').value : '',
+      website_outro:       integracao === 'Outro' ? document.getElementById('website_outro').value : '',
+      chatbot_nome:        document.getElementById('chatbot_nome').value,
+      chatbot_integracao:  gr('chatbot_integracao'),
+      chatbot_doc_url:     document.getElementById('chatbot_doc_url').value,
+      acessos_dmc:         document.getElementById('acessos_dmc').value,
+      data_envio:          new Date().toLocaleString('pt-BR')
+    };
+
+    var btn = document.getElementById('submitBtn');
+    btn.textContent = 'Enviando…'; btn.disabled = true;
+
+    fetch(SHEET_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function() {
+      document.getElementById('formbody').innerHTML =
+        '<div class="success-screen">'
+        + '<div class="check"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 14l6 6L22 8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
+        + '<h2>Briefing enviado!</h2>'
+        + '<p>Recebemos tudo certinho.<br>Nossa equipe iniciará o processo e entrará em contato em breve. 🚀</p>'
+        + '</div>';
+    }).catch(function() {
+      btn.textContent = 'Enviar briefing →'; btn.disabled = false;
+      showToast('Erro ao enviar. Verifique a conexão e tente novamente.', 'err');
+    });
+  }
+
+  // Barra de progresso
+  var sb = document.getElementById('stepbar');
+  for (var i = 0; i < 6; i++) { var d = document.createElement('div'); d.className = 'sd'; sb.appendChild(d); }
+  var dots = document.querySelectorAll('.sd');
+  var secs = document.querySelectorAll('.sec');
+  secs.forEach(function(s) {
+    new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          var idx = Array.from(secs).indexOf(e.target);
+          dots.forEach(function(d, i) { d.className = 'sd' + (i <= idx ? ' on' : ''); });
+        }
+      });
+    }, { threshold: 0.3 }).observe(s);
+  });
+</script>
+</body>
+</html>
