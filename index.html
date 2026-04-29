@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sites | Briefing — Syonet</title>
+  <title>Briefing Sites — Syonet</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -91,11 +91,11 @@
     </div>
     <div class="header-right">
       <h1>Briefing Sites</h1>
-      <p>Syonet</p>
+      <p>Briefing</p>
     </div>
   </div>
 
-  <div class="step-bar" id="stepbar"></div>
+  <div class="step-bar" id="stepbar" style="display:none"></div>
 
   <div id="formbody">
 
@@ -459,21 +459,7 @@
     });
   }
 
-  // Barra de progresso
-  var sb = document.getElementById('stepbar');
-  for (var i = 0; i < 5; i++) { var d = document.createElement('div'); d.className = 'sd'; sb.appendChild(d); }
-  var dots = document.querySelectorAll('.sd');
-  var secs = document.querySelectorAll('.sec');
-  secs.forEach(function(s) {
-    new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) {
-          var idx = Array.from(secs).indexOf(e.target);
-          dots.forEach(function(d, i) { d.className = 'sd' + (i <= idx ? ' on' : ''); });
-        }
-      });
-    }, { threshold: 0.3 }).observe(s);
-  });
+  // Barra de progresso removida — form de página única
 </script>
 </body>
 </html>
