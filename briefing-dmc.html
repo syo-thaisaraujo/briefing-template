@@ -122,7 +122,13 @@
       <div class="f">
         <label>E-mail para acesso ao integrador do Meta <span class="req">*</span></label>
         <p class="hint">Para conectar o Facebook, informe seu e-mail para criarmos seu acesso ao integrador do Meta.</p>
-        <input type="email" id="meta_email" placeholder="seu@email.com" />
+        <div class="rg" style="margin-bottom:8px">
+          <label><input type="radio" name="meta_opcao" value="usar" onchange="toggleMeta()"> Quero utilizar esta integração</label>
+          <label><input type="radio" name="meta_opcao" value="nao" onchange="toggleMeta()"> Não utilizarei esta integração</label>
+        </div>
+        <div id="campo-meta">
+          <input type="email" id="meta_email" placeholder="seu@email.com" />
+        </div>
       </div>
     </div>
 
@@ -132,7 +138,13 @@
       <div class="f">
         <label>ID da Conta de Google Ads <span class="req">*</span></label>
         <p class="hint">Para conectar o Google Ads, informe o ID da sua conta abaixo.</p>
-        <input type="text" id="google_ads_id" placeholder="123-456-7890" maxlength="12" oninput="mascaraAdsId(this)" />
+        <div class="rg" style="margin-bottom:8px">
+          <label><input type="radio" name="gads_opcao" value="usar" onchange="toggleGAds()"> Quero utilizar esta integração</label>
+          <label><input type="radio" name="gads_opcao" value="nao" onchange="toggleGAds()"> Não utilizarei esta integração</label>
+        </div>
+        <div id="campo-gads">
+          <input type="text" id="google_ads_id" placeholder="123-456-7890" maxlength="12" oninput="mascaraAdsId(this)" />
+        </div>
       </div>
     </div>
 
@@ -146,6 +158,7 @@
         <div class="rg">
           <label><input type="radio" name="ga_admin" value="Fornecido acesso do meu ID para a Syonet"> Fornecido acesso do meu ID para a Syonet</label>
           <label><input type="radio" name="ga_admin" value="Não possuo acesso, criar novo com a Syonet"> Não possuo acesso à conta do Analytics, criar um novo com o time Syonet</label>
+          <label><input type="radio" name="ga_admin" value="Não utilizarei esta integração"> Não utilizarei esta integração</label>
         </div>
       </div>
 
@@ -155,6 +168,7 @@
         <div class="rg">
           <label><input type="radio" name="ga_leitor" value="Fornecido acesso do meu ID para a Syonet"> Fornecido acesso do meu ID para a Syonet</label>
           <label><input type="radio" name="ga_leitor" value="Não possuo acesso, criar novo com a Syonet"> Não possuo acesso à conta do Analytics, criar um novo com o time Syonet</label>
+          <label><input type="radio" name="ga_leitor" value="Não utilizarei esta integração"> Não utilizarei esta integração</label>
         </div>
       </div>
 
@@ -197,7 +211,13 @@
       <div class="f">
         <label>Você usa chatbot?</label>
         <p class="hint">Se sim, descreva qual é a ferramenta.</p>
-        <input type="text" id="chatbot_nome" placeholder="Ex: ManyChat, Leadster, Zendesk…" oninput="toggleChatbot()" />
+        <div class="rg" style="margin-bottom:8px">
+          <label><input type="radio" name="chatbot_opcao" value="sim" onchange="toggleChatbotOpcao()"> Sim</label>
+          <label><input type="radio" name="chatbot_opcao" value="nao" onchange="toggleChatbotOpcao()"> Não utilizarei esta integração</label>
+        </div>
+        <div id="campo-chatbot-nome">
+          <input type="text" id="chatbot_nome" placeholder="Ex: ManyChat, Leadster, Zendesk…" oninput="toggleChatbot()" />
+        </div>
       </div>
 
       <!-- Condicional: chatbot -->
@@ -252,6 +272,31 @@
 
 <script>
   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwLkSw7CBuODvhI9o6kK383MZxTu-H4dKrcBNDGEHHKYN1G2xD0c_b0I5H78na7l4vA/exec';
+
+  function toggleMeta() {
+    var val = document.querySelector('input[name="meta_opcao"]:checked');
+    document.getElementById('campo-meta').style.display = (val && val.value === 'usar') ? 'block' : 'none';
+    if (val && val.value === 'nao') document.getElementById('meta_email').value = 'Não utilizarei esta integração';
+  }
+
+  function toggleGAds() {
+    var val = document.querySelector('input[name="gads_opcao"]:checked');
+    document.getElementById('campo-gads').style.display = (val && val.value === 'usar') ? 'block' : 'none';
+    if (val && val.value === 'nao') document.getElementById('google_ads_id').value = 'Não utilizarei esta integração';
+  }
+
+  function toggleChatbotOpcao() {
+    var val = document.querySelector('input[name="chatbot_opcao"]:checked');
+    var campoNome = document.getElementById('campo-chatbot-nome');
+    var campoInt = document.getElementById('cond-chatbot');
+    if (val && val.value === 'nao') {
+      campoNome.style.display = 'none';
+      campoInt.className = 'conditional';
+      document.getElementById('chatbot_nome').value = '';
+    } else {
+      campoNome.style.display = 'block';
+    }
+  }
 
   function mascaraAdsId(el) {
     var v = el.value.replace(/\D/g, '').substring(0, 10);
